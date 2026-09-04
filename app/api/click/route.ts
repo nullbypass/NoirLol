@@ -1,0 +1,2 @@
+import { NextResponse } from 'next/server'; import { db } from '@/lib/db';
+export async function GET(req:Request){const url=new URL(req.url);const id=url.searchParams.get('id');if(!id)return NextResponse.redirect(new URL('/',req.url));const link=await db.socialLink.findUnique({where:{id}});if(!link||!link.visible)return NextResponse.redirect(new URL('/',req.url));await db.linkClick.create({data:{userId:link.userId,linkId:link.id}}).catch(()=>{});return NextResponse.redirect(link.url,302);}

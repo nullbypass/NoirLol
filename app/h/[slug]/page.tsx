@@ -1,0 +1,3 @@
+import { db } from '@/lib/db'; import { notFound } from 'next/navigation';
+export const dynamic='force-dynamic';
+export default async function Hosted({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const a=await db.hostedAsset.findUnique({where:{slug}});if(!a)notFound();if(a.type==='PASTE')return <main className="hostPage"><article className="pasteCard">{a.title&&<h1>{a.title}</h1>}<pre>{a.content}</pre></article></main>;return <main className="hostPage">{a.type==='VIDEO'?<video className="hostMedia" controls src={a.url}/>:<img className="hostMedia" src={a.url} alt={a.title||''}/>}</main>}
