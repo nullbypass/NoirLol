@@ -1,16 +1,32 @@
-generator client { provider = "prisma-client-js" }
-datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+generator client {
+  provider = "prisma-client-js"
+}
 
-enum Layout { DEFAULT MODERN SIMPLISTIC SLEEK }
-enum HostType { IMAGE VIDEO PASTE }
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Layout {
+  DEFAULT
+  MODERN
+  SIMPLISTIC
+  SLEEK
+}
+
+enum HostType {
+  IMAGE
+  VIDEO
+  PASTE
+}
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String        @id @default(cuid())
+  email        String        @unique
   passwordHash String
-  username     String   @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  username     String        @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   profile      Profile?
   links        SocialLink[]
   aliases      Alias[]
@@ -20,116 +36,147 @@ model User {
 }
 
 model Profile {
-  id String @id @default(cuid())
-  userId String @unique
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  displayName String @default("")
-  bio String @default("")
-  location String @default("")
-  avatarUrl String @default("")
-  bannerUrl String @default("")
-  backgroundUrl String @default("")
-  backgroundType String @default("color")
-  audioUrl String @default("")
-  cursorUrl String @default("")
-  fontUrl String @default("")
-  fontFamily String @default("Inter")
-  layout Layout @default(DEFAULT)
-  accentColor String @default("#7d1018")
-  backgroundColor String @default("#080607")
-  textColor String @default("#f5eef0")
-  iconColor String @default("#f5eef0")
-  secondaryColor String @default("#220b0e")
-  profileOpacity Float @default(0.82)
-  profileBlur Int @default(18)
-  borderColor String @default("#4d1218")
-  borderWidth Int @default(1)
-  borderRadius Int @default(24)
-  avatarRadius Int @default(50)
-  bannerRadius Int @default(18)
-  glowEnabled Boolean @default(true)
-  glowColor String @default("#7d1018")
-  glowStrength Int @default(28)
-  gradientEnabled Boolean @default(true)
-  monochromeIcons Boolean @default(true)
-  animatedTitle Boolean @default(false)
-  swapBoxColors Boolean @default(false)
-  volumeControl Boolean @default(true)
-  volume Float @default(0.35)
-  backgroundEffect String @default("none")
-  usernameEffect String @default("none")
-  cursorEffect String @default("none")
-  profileAnimation String @default("fade")
-  typewriterEnabled Boolean @default(false)
-  typewriterTexts Json @default("[]")
-  typewriterSpeed Int @default(55)
-  typewriterDeleteSpeed Int @default(28)
-  hideViews Boolean @default(false)
-  hideBadges Boolean @default(false)
-  badgeColor String @default("#7d1018")
-  discordId String @default("")
-  discordAvatarUrl String @default("")
-  discordDecorationUrl String @default("")
-  discordPresence Boolean @default(false)
-  discordDecoration Boolean @default(false)
-  seoTitle String @default("")
-  seoDescription String @default("")
-  seoImage String @default("")
-  faviconUrl String @default("")
-  widgets Json @default("[]")
-  customCss String @default("")
-  updatedAt DateTime @updatedAt
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  displayName          String   @default("")
+  bio                  String   @default("")
+  location             String   @default("")
+
+  avatarUrl            String   @default("")
+  bannerUrl            String   @default("")
+  backgroundUrl        String   @default("")
+  backgroundType       String   @default("color")
+
+  audioUrl             String   @default("")
+  cursorUrl            String   @default("")
+  fontUrl              String   @default("")
+  fontFamily           String   @default("Inter")
+
+  layout               Layout   @default(DEFAULT)
+
+  accentColor          String   @default("#7d1018")
+  backgroundColor      String   @default("#080607")
+  textColor            String   @default("#f5eef0")
+  iconColor            String   @default("#f5eef0")
+  secondaryColor       String   @default("#220b0e")
+
+  profileOpacity       Float    @default(0.82)
+  profileBlur          Int      @default(18)
+
+  borderColor          String   @default("#4d1218")
+  borderWidth          Int      @default(1)
+  borderRadius         Int      @default(24)
+
+  avatarRadius         Int      @default(50)
+  bannerRadius         Int      @default(18)
+
+  glowEnabled          Boolean  @default(true)
+  glowColor            String   @default("#7d1018")
+  glowStrength         Int      @default(28)
+
+  gradientEnabled      Boolean  @default(true)
+  monochromeIcons      Boolean  @default(true)
+  animatedTitle        Boolean  @default(false)
+  swapBoxColors        Boolean  @default(false)
+
+  volumeControl        Boolean  @default(true)
+  volume               Float    @default(0.35)
+
+  backgroundEffect     String   @default("none")
+  usernameEffect       String   @default("none")
+  cursorEffect         String   @default("none")
+  profileAnimation     String   @default("fade")
+
+  typewriterEnabled    Boolean  @default(false)
+  typewriterTexts      Json     @default("[]")
+  typewriterSpeed      Int      @default(55)
+  typewriterDeleteSpeed Int     @default(28)
+
+  hideViews            Boolean  @default(false)
+  hideBadges           Boolean  @default(false)
+  badgeColor           String   @default("#7d1018")
+
+  discordId            String   @default("")
+  discordAvatarUrl     String   @default("")
+  discordDecorationUrl String   @default("")
+  discordPresence      Boolean  @default(false)
+  discordDecoration    Boolean  @default(false)
+
+  seoTitle             String   @default("")
+  seoDescription       String   @default("")
+  seoImage             String   @default("")
+  faviconUrl           String   @default("")
+
+  widgets              Json     @default("[]")
+  customCss            String   @default("")
+
+  updatedAt            DateTime @updatedAt
 }
 
 model SocialLink {
-  id String @id @default(cuid())
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  label String
-  url String
-  position Int @default(0)
-  visible Boolean @default(true)
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  label     String
+  url       String
+  position  Int      @default(0)
+  visible   Boolean  @default(true)
+
   createdAt DateTime @default(now())
 }
 
 model Alias {
-  id String @id @default(cuid())
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  slug String @unique
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  slug      String   @unique
+
   createdAt DateTime @default(now())
 }
 
 model ProfileView {
-  id String @id @default(cuid())
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ipHash String
-  userAgent String @default("")
-  referrer String @default("")
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  ipHash    String
+  userAgent String   @default("")
+  referrer  String   @default("")
+
   createdAt DateTime @default(now())
+
   @@index([userId, createdAt])
 }
 
 model LinkClick {
-  id String @id @default(cuid())
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  linkId String
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  linkId    String
+
   createdAt DateTime @default(now())
+
   @@index([userId, createdAt])
 }
 
 model HostedAsset {
-  id String @id @default(cuid())
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  slug String @unique
-  type HostType
-  url String @default("")
-  title String @default("")
-  content String @default("")
-  mimeType String @default("")
-  size Int @default(0)
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  slug      String   @unique
+  type      HostType
+
+  url       String   @default("")
+  title     String   @default("")
+  content   String   @default("")
+  mimeType  String   @default("")
+  size      Int      @default(0)
+
   createdAt DateTime @default(now())
 }
